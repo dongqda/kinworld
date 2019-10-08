@@ -16,8 +16,8 @@
 ![SpringBoot_Vue](md_pic/springBoot_vue.png)
 
 + IDE : Eclipse
-+ SpringBoot 
-+ Vue.js
++ SpringBoot 2
++ Vue cli 3
 + Java
 + Gradle
 + MariaDB
@@ -25,7 +25,7 @@
 
 
 
-## 설정-Setup
+## II. 설정-Setup
 
 ##### 1. Go to [SpringBoot Initializr](https://start.spring.io/)
 
@@ -53,7 +53,8 @@
 + Windows 
 
 ```
-  npm install -g vue-cli
+  npm i -g @vue/cli // vue-cli 3.x
+  npm i -g vue-cli // vue-cli 2.x
 ```
 
 
@@ -69,55 +70,14 @@
   cd kinworld
 ```
 
-+ frontend 이름으로 webpack 생성
++ Create Project
 
 ```
-  vue init webpack frontend
-```
-+ 상세설정
-```
-  bash$ vue init webpack frontend 
-    
-  ? Project name frontend
-  ? Project description A Vue.js project 
-  ? Author dglee012@gmail.com 
-  ? Vue build standalone 
-  ? Install vue-router? Yes 
-  ? Use ESLint to lint your code? Yes 
-  ? Pick an ESLint preset Airbnb 
-  ? Set up unit tests Yes 
-  ? Pick a test runner karma 
-  ? Setup e2e tests with Nightwatch? Yes 
-
-      vue-cli · Generated "vue-test". 
-
-      To get started: 
-
-          cd vue-test 
-          npm install 
-          npm run dev 
-
-      Documentation can be found at https://vuejs-templates.github.io/webpack
+	vue create '프로젝트 명' // vue-cli 3.X
+    vue init webpack '프로젝트 명' // vue-cli 2.X
 ```
 
-##### 9. Edit frontend\config\index.js 
-
-+ webpack 빌드 시 index.html생성 위치를 Gradle Project 안의 resource\template로 변경(line 46)
-
-```
-...
-    build: {
-      // Template for index.html
-      index: path.resolve(__dirname, '../../src/main/resources/templates/index.html'),
-
-      // Paths
-      assetsRoot: path.resolve(__dirname, '../../src/main/resources/static'),
-      assetsSubDirectory: '',
-      assetsPublicPath: '/',
-...
-```
-
-##### 10. Build
+ + Build
 
 ```
     cd frontend
@@ -125,13 +85,35 @@
     npm run build
 ```
 
-##### 11. Add Dependencies in resource\application.properties
+##### 10. Run in local Server
 
 ```
-...
-	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-...
+    npm run serve // vue-cli 3.x
+    npm run dev // vue-cli 2.x
 ```
+
+##### 11. Create vue.config.js
+
+![vueConfigJs](/md_pic/vueConfigJs.png)
+
+```
+    module.exports = {  
+      outputDir: "../src/main/resources/static",  
+      indexPath: "../static/index.html",  
+      devServer: {  
+        proxy: "http://localhost:8080"  
+      },  
+      chainWebpack: config => {  
+        const svgRule = config.module.rule("svg");    
+        svgRule.uses.clear();    
+        svgRule.use("vue-svg-loader").loader("vue-svg-loader");  
+      }  
+    };
+```
+
++ outputDir은 npm run build로 빌드 시 파일이 생성되는 위치
++ indexPath는 index.html 파일이 생성될 위치를 지정
++ devServer는 Back-End( Spring Boot의 내장 was의 주소)
 
 ##### 12. Maria DB Setting
 
@@ -147,9 +129,17 @@
 
 ![startVue](md_pic/startVue.png)
 
-# III. 레이아웃 - Layout
+# III. 레이아웃-Layout
 
-##### 1.  Use vue-tree-nav
+##### 1. Add Vuetify
+
+```
+	npm add vuetify
+```
+
+![vuetify](md_pic/vuetify.png)
+
+##### 2.  Use vue-tree-nav
 
 ###### npm install --save vue-tree-nav
 
